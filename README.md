@@ -33,8 +33,20 @@ A `%` denotes the beginning of a **Comment**, and affects the remainder of the l
 Headers are prefixed with one of `!`, `@`, or `#`, followed by a number of `k=v` pairs:
 
 - `!` denotes a song. The note block immediately succeeding it will be a _track_ (however, the use of "naked tracks" -- tracks that do not follow `#`-prefixed header blocks -- are discouraged).
-- `@` denotes a pattern. The note block immediately succeeding it will be a _pattern_, referrable with an ID denoted by the `id` key as described below.
+  - `bpm=(number)`: Set the song's tempo. This is a value greater than 0.
+  - `swing=(number)`: Add swing to the song. This is a value from 0 to 1.
+  - `transpose=(number)`: Transpose all notes in the song. This is an integer value.
+- `@` denotes a pattern. The note block immediately succeeding it will be a _pattern_, referrable with an ID denoted by the `id` key.
+  - `id=(string)`: The pattern's name. This is how the pattern will be referenced.
+    - If multiple patterns have the same ID, they will be layered on top of each other. Each "sub-pattern" maintains its separate remaining properties described below.
+  - `channelIndex=(number)`: Set which channel in a track the notes in the pattern will play. Note that this isn't the channel number itself, but the index when multiple channels are specified for a track. This is an integer value at least 0.
+  - `transpose=(number)`: Transpose all notes in the pattern (in addition to the global transpose). This is an integer value.
+  - `velocity=(number)`: Set the velocity (~volume) for all notes in the pattern. This is an integer value from 0 to 127.
 - `#` denotes a track. The note block immediately succeeding it will be a _track_.
+  - `channel=(number)`: The channel that notes in the track will play on. This is an integer value at least 1.
+  - `channels=[(number), ..., (number)]`: Additional channels that are specified for the track. These channels are only used to play notes specified in patterns with a specific `channelIndex`. These are effectively 1-indexed because the first channel (index 0) is always specified by `channel`. Each element is an integer value at least 1.
+  - `transpose=(number)`: Transpose all notes in the track (in addition to the global transpose and per-pattern transpose). This is an integer value.
+  - `velocity=(number)`: Set the velocity (~volume) for all notes in the track. This is an integer value from 0 to 127.
 
 ### Note Blocks
 
